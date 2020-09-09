@@ -1,14 +1,21 @@
-import os
-import datetime
-import argparse
+import sys,os,shutil,datetime,argparse
 
-parser = argparse.ArgumentParser(description='append')
-parser.add_argument("-rows", required=True, type=int, help="This is number of rows to append")
-parser.add_argument("file", default=None, type=str, help="Filename")
+parser = argparse.ArgumentParser(description='Skriv ut filex med speciellt path och extenstion')
+parser.add_argument("-d", required=True, type=str, help="Path to files")
+parser.add_argument("-f", required=True, type=str, help="file extemsion")
 args = parser.parse_args()
 
-with open(args.file, "a") as myfile:
-    for i in range(0,args.rows):
-        datum = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        myfile.write(f"{datum}\n")
+filer = []
 
+for root, dirs, files in os.walk(args.d):
+    for file in files:
+        if file.endswith(f".{args.f}"):
+             #print(os.path.join(root, file))
+             filer.append(os.path.join(root, file))
+
+print("--------------------------------------------------------------------------------")
+
+
+for files in filer:
+
+    print(f"Fil: {files}" , f"Storlek på denna fil är: {os.path.getsize(files)} bytes")
